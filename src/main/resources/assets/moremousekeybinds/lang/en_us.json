@@ -1,0 +1,6 @@
+{
+  "key.moremousekeybinds.holdattack": "Simulates holding the attack key",
+  "key.moremousekeybinds.holduse": "Simulates holding the use key",
+  "key.moremousekeybinds.periodicattack": "Periodically attacks",
+  "category.moremousekeybinds.general": "MouseClickSwap"
+}
