@@ -50,10 +50,12 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
 
             while (holdAttack.wasPressed()) {
                 shouldHoldAttack = !shouldHoldAttack;
+                attackKeybinding.setPressed(shouldHoldAttack);
             }
 
             while (holdUse.wasPressed()) {
                 shouldHoldUse = !shouldHoldUse;
+                useKeybinding.setPressed(shouldHoldUse);
             }
 
             while (periodicAttack.wasPressed()) {
@@ -66,10 +68,8 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
 //                periodicAttackCounter++;
 //            }
 
-            if (client.player != null && (shouldHoldAttack || (shouldPeriodicAttack && client.player.getAttackCooldownProgress(0.0F) == 1.0F))) {
+            if (client.player != null && (shouldPeriodicAttack && client.player.getAttackCooldownProgress(0.0F) == 1.0F)) {
                 KeyBinding.onKeyPressed(attackKeybinding.getDefaultKey());
-            } else if (client.player != null && shouldHoldUse) {
-                KeyBinding.onKeyPressed(useKeybinding.getDefaultKey());
             }
         });
     }
