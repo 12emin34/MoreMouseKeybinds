@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.MinecraftVersion;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -24,13 +25,7 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        boolean useLegacyText = true;
-        try {
-            Class.forName("net.minecraft.class_2585");
-        } catch (ClassNotFoundException e) {
-            useLegacyText = false;
-        }
-
+        boolean useLegacyText = !MinecraftVersion.CURRENT.getName().startsWith("1.19");
 
         holdAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.moremousekeybinds.holdattack",
