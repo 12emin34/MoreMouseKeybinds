@@ -26,8 +26,9 @@
     "moremousekeybinds.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.9",
+    "fabricloader": ">=0.14.10",
     "fabric": "*",
-    "minecraft": ">=1.18"
+    "minecraft": ">=1.18",
+    "midnightlib" : ">=0.4.4"
   }
 }
