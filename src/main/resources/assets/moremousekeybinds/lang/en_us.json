@@ -2,5 +2,6 @@
   "key.moremousekeybinds.holdattack": "Simulate holding the attack key",
   "key.moremousekeybinds.holduse": "Simulate holding the use key",
   "key.moremousekeybinds.periodicattack": "Periodically attack",
-  "category.moremousekeybinds.general": "MoreMouseKeybinds"
+  "category.moremousekeybinds.general": "MoreMouseKeybinds",
+  "moremousekeybinds.midnightconfig.title": "MoreMouseKeybinds Config"
 }

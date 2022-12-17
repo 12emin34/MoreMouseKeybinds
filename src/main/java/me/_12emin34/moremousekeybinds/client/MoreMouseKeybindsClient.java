@@ -1,6 +1,9 @@
 package me._12emin34.moremousekeybinds.client;
 
+import eu.midnightdust.lib.config.MidnightConfig;
+import me._12emin34.moremousekeybinds.ModConstants;
 import me._12emin34.moremousekeybinds.compat.TextHack;
+import me._12emin34.moremousekeybinds.config.ModConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,40 +18,37 @@ import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
 public class MoreMouseKeybindsClient implements ClientModInitializer {
-    private static KeyBinding holdAttack;
-    private static KeyBinding holdUse;
-    private static KeyBinding periodicAttack;
     boolean shouldHoldAttack = false;
     boolean shouldHoldUse = false;
     boolean shouldPeriodicAttack = false;
-//    int periodicAttackCounter = 0;
+    int periodicAttackCounter = 0;
 
     @Override
     public void onInitializeClient() {
-        boolean useLegacyText = !MinecraftVersion.CURRENT.getName().startsWith("1.19");
+        boolean useLegacyText = MinecraftVersion.CURRENT.getName().startsWith("1.18");
+        MidnightConfig.init("moremousekeybinds", ModConfig.class);
 
-        holdAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        KeyBinding holdAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.moremousekeybinds.holdattack",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_V,
-                "category.moremousekeybinds.general"
+                ModConstants.keybindingCategory
         ));
 
-        holdUse = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        KeyBinding holdUse = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.moremousekeybinds.holduse",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_B,
-                "category.moremousekeybinds.general"
+                ModConstants.keybindingCategory
         ));
 
-        periodicAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        KeyBinding periodicAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.moremousekeybinds.periodicattack",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_N,
-                "category.moremousekeybinds.general"
+                ModConstants.keybindingCategory
         ));
 
-        boolean finalUseLegacyText = useLegacyText;
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             GameOptions options = client.options;
             KeyBinding attackKeybinding = options.attackKey;
@@ -58,7 +58,7 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
                 shouldHoldAttack = !shouldHoldAttack;
                 attackKeybinding.setPressed(shouldHoldAttack);
                 if (client.player != null) {
-                    if (finalUseLegacyText) {
+                    if (useLegacyText) {
                         if (shouldHoldAttack) {
                             client.player.sendMessage((Text) TextHack.literal("Hold attack button: ON"), true);
                         } else {
@@ -80,7 +80,7 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
                 shouldHoldUse = !shouldHoldUse;
                 useKeybinding.setPressed(shouldHoldUse);
                 if (client.player != null) {
-                    if (finalUseLegacyText) {
+                    if (useLegacyText) {
                         if (shouldHoldUse) {
                             client.player.sendMessage((Text) TextHack.literal("Hold use button: ON"), true);
                         } else {
@@ -98,8 +98,9 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
 
             while (periodicAttack.wasPressed()) {
                 shouldPeriodicAttack = !shouldPeriodicAttack;
+                periodicAttackCounter = 0;
                 if (client.player != null) {
-                    if (finalUseLegacyText) {
+                    if (useLegacyText) {
                         if (shouldPeriodicAttack) {
                             client.player.sendMessage((Text) TextHack.literal("Periodic attack: ON"), true);
                         } else {
@@ -115,14 +116,17 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
                 }
             }
 
-//            if (periodicAttackCounter > 40) {
-//                periodicAttackCounter = 0;
-//            } else if (shouldPeriodicAttack) {
-//                periodicAttackCounter++;
-//            }
-
-            if (client.player != null && (shouldPeriodicAttack && client.player.getAttackCooldownProgress(0.0F) == 1.0F)) {
-                KeyBinding.onKeyPressed(attackKeybinding.getDefaultKey());
+            if (ModConfig.periodicAttackMatchCooldownSpeed) {
+                if (client.player != null && (shouldPeriodicAttack && client.player.getAttackCooldownProgress(0.0F) == 1.0F)) {
+                    KeyBinding.onKeyPressed(attackKeybinding.getDefaultKey());
+                }
+            } else {
+                if (periodicAttackCounter > ModConfig.periodicAttackDelay) {
+                    periodicAttackCounter = 0;
+                    KeyBinding.onKeyPressed(attackKeybinding.getDefaultKey());
+                } else if (shouldPeriodicAttack) {
+                    periodicAttackCounter++;
+                }
             }
         });
     }
