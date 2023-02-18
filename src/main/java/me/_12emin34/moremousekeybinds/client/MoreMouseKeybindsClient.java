@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -23,9 +24,10 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
     boolean shouldPeriodicAttack = false;
     int periodicAttackCounter = 0;
 
+    boolean useLegacyText = MinecraftVersion.CURRENT.getName().startsWith("1.18");
+
     @Override
     public void onInitializeClient() {
-        boolean useLegacyText = MinecraftVersion.CURRENT.getName().startsWith("1.18");
         MidnightConfig.init("moremousekeybinds", ModConfig.class);
 
         KeyBinding holdAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -57,63 +59,19 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
             while (holdAttack.wasPressed()) {
                 shouldHoldAttack = !shouldHoldAttack;
                 attackKeybinding.setPressed(shouldHoldAttack);
-                if (client.player != null) {
-                    if (useLegacyText) {
-                        if (shouldHoldAttack) {
-                            client.player.sendMessage((Text) TextHack.literal("Hold attack button: ON"), true);
-                        } else {
-                            client.player.sendMessage((Text) TextHack.literal("Hold attack button: OFF"), true);
-                        }
-                    } else {
-                        if (shouldHoldAttack) {
-                            client.player.sendMessage(Text.literal("Hold attack button: ON"), true);
-                        } else {
-                            client.player.sendMessage(Text.literal("Hold attack button: OFF"), true);
-                        }
-                    }
-
-
-                }
+                sendToggleMessage(shouldHoldAttack, "Hold attack button: ", client);
             }
 
             while (holdUse.wasPressed()) {
                 shouldHoldUse = !shouldHoldUse;
                 useKeybinding.setPressed(shouldHoldUse);
-                if (client.player != null) {
-                    if (useLegacyText) {
-                        if (shouldHoldUse) {
-                            client.player.sendMessage((Text) TextHack.literal("Hold use button: ON"), true);
-                        } else {
-                            client.player.sendMessage((Text) TextHack.literal("Hold use button: OFF"), true);
-                        }
-                    } else {
-                        if (shouldHoldUse) {
-                            client.player.sendMessage(Text.literal("Hold use button: ON"), true);
-                        } else {
-                            client.player.sendMessage(Text.literal("Hold use button: OFF"), true);
-                        }
-                    }
-                }
+                sendToggleMessage(shouldHoldUse, "Hold use button: ", client);
             }
 
             while (periodicAttack.wasPressed()) {
                 shouldPeriodicAttack = !shouldPeriodicAttack;
                 periodicAttackCounter = 0;
-                if (client.player != null) {
-                    if (useLegacyText) {
-                        if (shouldPeriodicAttack) {
-                            client.player.sendMessage((Text) TextHack.literal("Periodic attack: ON"), true);
-                        } else {
-                            client.player.sendMessage((Text) TextHack.literal("Periodic attack: OFF"), true);
-                        }
-                    } else {
-                        if (shouldPeriodicAttack) {
-                            client.player.sendMessage(Text.literal("Periodic attack: ON"), true);
-                        } else {
-                            client.player.sendMessage(Text.literal("Periodic attack: OFF"), true);
-                        }
-                    }
-                }
+                sendToggleMessage(shouldPeriodicAttack, "Periodic attack: ", client);
             }
 
             if (ModConfig.periodicAttackMatchCooldownSpeed) {
@@ -129,5 +87,15 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
                 }
             }
         });
+    }
+
+    public void sendToggleMessage(boolean optionToCheck, String message, MinecraftClient client) {
+        if (client.player == null) return;
+        String tmp = optionToCheck ? "ON" : "OFF";
+        if (useLegacyText) {
+            client.player.sendMessage((Text) TextHack.literal(message + tmp), true);
+        } else {
+            client.player.sendMessage(Text.literal(message + tmp), true);
+        }
     }
 }
