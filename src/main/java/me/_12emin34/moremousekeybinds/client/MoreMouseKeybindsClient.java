@@ -34,21 +34,21 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
                 "key.moremousekeybinds.holdattack",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_V,
-                ModConstants.keybindingCategory
+                ModConstants.KEYBINDING_CATEGORY
         ));
 
         KeyBinding holdUse = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.moremousekeybinds.holduse",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_B,
-                ModConstants.keybindingCategory
+                ModConstants.KEYBINDING_CATEGORY
         ));
 
         KeyBinding periodicAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.moremousekeybinds.periodicattack",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_N,
-                ModConstants.keybindingCategory
+                ModConstants.KEYBINDING_CATEGORY
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
