@@ -17,9 +17,6 @@
   "entrypoints": {
     "client": [
       "me._12emin34.moremousekeybinds.client.MoreMouseKeybindsClient"
-    ],
-    "main": [
-      "me._12emin34.moremousekeybinds.MoreMouseKeybinds"
     ]
   },
   "depends": {
