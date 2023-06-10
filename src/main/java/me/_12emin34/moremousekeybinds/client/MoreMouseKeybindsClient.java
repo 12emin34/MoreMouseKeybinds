@@ -22,6 +22,7 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
     boolean shouldHoldAttack = false;
     boolean shouldHoldUse = false;
     boolean shouldPeriodicAttack = false;
+    boolean shouldHoldKeyToAttack = false;
     int periodicAttackCounter = 0;
     KeyBinding holdAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.moremousekeybinds.holdattack",
@@ -44,9 +45,17 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
             ModConstants.KEYBINDING_CATEGORY
     ));
 
+    KeyBinding toggleHoldToAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key.moremousekeybinds.toggleholdtoattack",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_M,
+            ModConstants.KEYBINDING_CATEGORY
+    ));
+
     @Override
     public void onInitializeClient() {
         MidnightConfig.init("moremousekeybinds", ModConfig.class);
+        ClientTickEvents.START_CLIENT_TICK.register(this::onStartTick);
         ClientTickEvents.END_CLIENT_TICK.register(this::onEndTick);
     }
 
@@ -71,6 +80,12 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
         return false;
     }
 
+    private void onStartTick(MinecraftClient client) {
+        if (shouldHoldKeyToAttack && (client.player != null && client.player.getAttackCooldownProgress(0.0F) == 1.0F) && client.options.attackKey.isPressed()) {
+            KeyBinding.onKeyPressed(KeyBindingHelper.getBoundKeyOf(client.options.attackKey));
+        }
+    }
+
     private void onEndTick(MinecraftClient client) {
         GameOptions options = client.options;
         KeyBinding attackKeybinding = options.attackKey;
@@ -92,6 +107,11 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
             shouldPeriodicAttack = !shouldPeriodicAttack;
             periodicAttackCounter = 0;
             sendToggleMessage(shouldPeriodicAttack, "Periodic attack: ", client);
+        }
+
+        while (toggleHoldToAttack.wasPressed()) {
+            shouldHoldKeyToAttack = !shouldHoldKeyToAttack;
+            sendToggleMessage(shouldHoldKeyToAttack, "Hold key to attack: ", client);
         }
 
         if (ModConfig.periodicAttackMatchCooldownSpeed) {
