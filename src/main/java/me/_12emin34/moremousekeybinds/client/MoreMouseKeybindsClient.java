@@ -96,12 +96,12 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
 
         if (ModConfig.periodicAttackMatchCooldownSpeed) {
             if (client.player != null && (shouldPeriodicAttack && client.player.getAttackCooldownProgress(0.0F) == 1.0F)) {
-                KeyBinding.onKeyPressed(attackKeybinding.getDefaultKey());
+                KeyBinding.onKeyPressed(KeyBindingHelper.getBoundKeyOf(attackKeybinding));
             }
         } else {
             if (periodicAttackCounter > ModConfig.periodicAttackDelay) {
                 periodicAttackCounter = 0;
-                KeyBinding.onKeyPressed(attackKeybinding.getDefaultKey());
+                KeyBinding.onKeyPressed(KeyBindingHelper.getBoundKeyOf(attackKeybinding));
             } else if (shouldPeriodicAttack) {
                 periodicAttackCounter++;
             }
