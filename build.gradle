@@ -1,5 +1,6 @@
 plugins {
-    id 'fabric-loom' version '1.1-SNAPSHOT'
+    id 'fabric-loom' version '1.2.7'
+    id 'io.github.juuxel.loom-quiltflower' version '1.8.+'
     id 'maven-publish'
 }
 
@@ -30,11 +31,9 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
     modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
-    modRuntimeOnly "maven.modrinth:lazydfu:${project.lazydfu_version}"
     modRuntimeOnly "maven.modrinth:spark:${project.spark_version}"
     modRuntimeOnly "maven.modrinth:lithium:${project.lithium_version}"
     modRuntimeOnly "maven.modrinth:ferrite-core:${project.ferrite_core_version}"
-    modRuntimeOnly "maven.modrinth:starlight:${project.starlight_version}"
     modRuntimeOnly "maven.modrinth:modmenu:${project.modmenu_version}"
 }
 
