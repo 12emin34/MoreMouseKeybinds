@@ -3,7 +3,7 @@
   "id": "moremousekeybinds",
   "version": "${version}",
   "name": "MoreMouseKeybinds",
-  "description": "Simulates holding attack or use (or periodic clicking of them)",
+  "description": "Adds in some useful utility/accessibility features that are toggled using keybinds.",
   "authors": [
     "12emin34"
   ],
