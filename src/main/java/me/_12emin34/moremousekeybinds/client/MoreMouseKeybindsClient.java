@@ -30,35 +30,35 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
     KeyBinding holdAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.moremousekeybinds.holdattack",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_V,
+            GLFW.GLFW_KEY_UNKNOWN,
             ModConstants.KEYBINDING_CATEGORY
     ));
 
     KeyBinding holdUse = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.moremousekeybinds.holduse",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_B,
+            GLFW.GLFW_KEY_UNKNOWN,
             ModConstants.KEYBINDING_CATEGORY
     ));
 
     KeyBinding periodicAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.moremousekeybinds.periodicattack",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_N,
+            GLFW.GLFW_KEY_UNKNOWN,
             ModConstants.KEYBINDING_CATEGORY
     ));
 
     KeyBinding toggleHoldToAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.moremousekeybinds.toggleholdtoattack",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_M,
+            GLFW.GLFW_KEY_UNKNOWN,
             ModConstants.KEYBINDING_CATEGORY
     ));
 
     KeyBinding toggleCancelSwingWhenCoolingDown = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.moremousekeybinds.togglecancelswingwhencoolingdown",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_K,
+            GLFW.GLFW_KEY_UNKNOWN,
             ModConstants.KEYBINDING_CATEGORY
     ));
 
