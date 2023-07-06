@@ -4,6 +4,7 @@
   "key.moremousekeybinds.periodicattack": "Periodically attack",
   "key.moremousekeybinds.toggleholdtoattack": "Hold-to-attack",
   "key.moremousekeybinds.togglecancelswingwhencoolingdown": "Only swing when cooldown full",
+  "key.moremousekeybinds.togglecancelswingwhennotarget": "Prevent swinging in air",
   "category.moremousekeybinds.general": "MoreMouseKeybinds",
   "moremousekeybinds.midnightconfig.title": "MoreMouseKeybinds Config"
 }

@@ -16,6 +16,7 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.HitResult;
 import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
@@ -26,6 +27,7 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
     boolean shouldPeriodicAttack = false;
     boolean shouldHoldKeyToAttack = false;
     boolean shouldCancelSwingWhenCoolingDown = false;
+    boolean shouldCancelSwingWhenNoTarget = false;
     int periodicAttackCounter = 0;
     KeyBinding holdAttack = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.moremousekeybinds.holdattack",
@@ -62,6 +64,13 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
             ModConstants.KEYBINDING_CATEGORY
     ));
 
+    KeyBinding toggleCancelSwingWhenNoTarget = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key.moremousekeybinds.togglecancelswingwhennotarget",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_UNKNOWN,
+            ModConstants.KEYBINDING_CATEGORY
+    ));
+
     @Override
     public void onInitializeClient() {
         MidnightConfig.init("moremousekeybinds", ModConfig.class);
@@ -92,7 +101,11 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
     }
 
     private boolean onPreAttack(MinecraftClient client, ClientPlayerEntity clientPlayerEntity, int i) {
-        return shouldCancelSwingWhenCoolingDown && (clientPlayerEntity != null && clientPlayerEntity.getAttackCooldownProgress(0.0F) != 1.0F);
+        if (shouldCancelSwingWhenCoolingDown && (clientPlayerEntity != null && clientPlayerEntity.getAttackCooldownProgress(0.0F) != 1.0F)) {
+            return true;
+        } else {
+            return shouldCancelSwingWhenNoTarget && (client.crosshairTarget != null && client.crosshairTarget.getType() == HitResult.Type.MISS);
+        }
     }
 
     private void onStartTick(MinecraftClient client) {
@@ -132,6 +145,11 @@ public class MoreMouseKeybindsClient implements ClientModInitializer {
         while (toggleCancelSwingWhenCoolingDown.wasPressed()) {
             shouldCancelSwingWhenCoolingDown = !shouldCancelSwingWhenCoolingDown;
             sendToggleMessage(shouldCancelSwingWhenCoolingDown, "Attack only when cooldown full: ", client);
+        }
+
+        while (toggleCancelSwingWhenNoTarget.wasPressed()) {
+            shouldCancelSwingWhenNoTarget = !shouldCancelSwingWhenNoTarget;
+            sendToggleMessage(shouldCancelSwingWhenNoTarget, "Prevent swinging in air: ", client);
         }
 
         if (ModConfig.periodicAttackMatchCooldownSpeed) {
