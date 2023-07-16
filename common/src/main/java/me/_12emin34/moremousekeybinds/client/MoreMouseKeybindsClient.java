@@ -21,6 +21,7 @@ import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
 public class MoreMouseKeybindsClient {
+    public static final String MOD_ID = "moremousekeybinds";
     static final boolean SHOULD_USE_LEGACY_TEXT = shouldUseLegacyText();
     static boolean shouldHoldAttack = false;
     static boolean shouldHoldUse = false;
