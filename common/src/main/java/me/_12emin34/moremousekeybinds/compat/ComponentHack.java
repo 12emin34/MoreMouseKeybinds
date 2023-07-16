@@ -3,8 +3,8 @@ package me._12emin34.moremousekeybinds.compat;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class TextHack {
-    private TextHack() {
+public class ComponentHack {
+    private ComponentHack() {
         throw new IllegalStateException("This class is not intended to be instantiated");
     }
 

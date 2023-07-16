@@ -12,17 +12,20 @@
     "issues": "https://github.com/12emin34/MouseMouseKeybinds/issues"
   },
   "license": "LGPL-3.0",
-  "icon": "assets/moremousekeybinds/icon.png",
+  "icon": "icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "me._12emin34.moremousekeybinds.client.MoreMouseKeybindsClient"
+      "me._12emin34.moremousekeybinds.fabric.client.MoreMouseKeybindsClientFabric"
     ]
   },
+  "mixins": [
+    "moremousekeybinds-common.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.14.14",
     "fabric": "*",
     "minecraft": ">=1.17.1",
-    "midnightlib" : ">=0.4.4"
+    "midnightlib": ">=0.4.4"
   }
 }
