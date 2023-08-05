@@ -14,6 +14,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.HitResult;
 import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
@@ -22,6 +23,8 @@ public class MoreMouseKeybindsClient {
     static final boolean SHOULD_USE_LEGACY_TEXT = shouldUseLegacyText();
     public static boolean shouldCancelSwingWhenCoolingDown = false;
     public static boolean shouldCancelSwingWhenNoTarget = false;
+    public static boolean swingCancelledWhenCoolingDown = false;
+    public static boolean swingCancelledWhenNoTarget = false;
     static boolean shouldHoldAttack = false;
     static boolean shouldHoldUse = false;
     static boolean shouldPeriodicAttack = false;
@@ -82,18 +85,8 @@ public class MoreMouseKeybindsClient {
         MidnightConfig.init("moremousekeybinds", ModConfig.class);
         ClientTickEvent.CLIENT_PRE.register(MoreMouseKeybindsClient::onStartTick);
         ClientTickEvent.CLIENT_POST.register(MoreMouseKeybindsClient::onEndTick);
-//        ClientRawInputEvent.MOUSE_CLICKED_PRE.register(MoreMouseKeybindsClient::onPreAttack);
         registerKeyMappings();
     }
-
-//    private static EventResult onPreAttack(Minecraft minecraft, int i, int i1, int i2) {
-//        if (shouldCancelSwingWhenCoolingDown && (minecraft.player != null && minecraft.player.getAttackStrengthScale(0.0F) != 1.0F)) {
-//            return EventResult.interruptFalse();
-//        } else if (shouldCancelSwingWhenNoTarget && (minecraft.hitResult != null && minecraft.hitResult.getType() == HitResult.Type.MISS)) {
-//            return EventResult.interruptFalse();
-//        }
-//        return EventResult.pass();
-//    }
 
     private static void sendToggleMessage(boolean optionToCheck, String message, Minecraft client) {
         if (client.player == null) return;
@@ -109,6 +102,9 @@ public class MoreMouseKeybindsClient {
         if (shouldHoldKeyToAttack && (client.player != null && client.player.getAttackStrengthScale(0.0F) == 1.0F) && client.options.keyAttack.isDown()) {
             KeyMapping.click(((KeyMappingAccessor) client.options.keyAttack).getKey());
         }
+
+        swingCancelledWhenCoolingDown = shouldCancelSwingWhenCoolingDown && (client.player != null && client.player.getAttackStrengthScale(0.0F) != 1.0F);
+        swingCancelledWhenNoTarget = shouldCancelSwingWhenNoTarget && (client.hitResult != null && client.hitResult.getType() == HitResult.Type.MISS);
     }
 
     private static void onEndTick(Minecraft client) {
