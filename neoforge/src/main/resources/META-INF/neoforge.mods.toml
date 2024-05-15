@@ -1,0 +1,38 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://github.com/12emin34/MouseMouseKeybinds/issues"
+license = "LGPL-3.0"
+
+[[mods]]
+modId = "moremousekeybinds"
+version = "${version}"
+displayName = "MoreMouseKeybinds"
+authors = "12emin34"
+description = '''
+Adds in some useful utility/accessibility features that are toggled using keybinds.
+'''
+logoFile = "icon.png"
+
+[[dependencies.moremousekeybinds]]
+modId = "neoforge"
+type = "required"
+versionRange = "[20.5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.moremousekeybinds]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.20.5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.moremousekeybinds]]
+modId = "architectury"
+type = "required"
+versionRange = "[12.0.27,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "moremousekeybinds-common.mixins.json"
