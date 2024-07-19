@@ -5,7 +5,6 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import eu.midnightdust.lib.config.MidnightConfig;
 import me._12emin34.moremousekeybinds.ModConstants;
-import me._12emin34.moremousekeybinds.compat.ComponentHack;
 import me._12emin34.moremousekeybinds.config.ModConfig;
 import me._12emin34.moremousekeybinds.mixin.KeyMappingAccessor;
 import net.fabricmc.api.EnvType;
@@ -20,7 +19,6 @@ import org.lwjgl.glfw.GLFW;
 @Environment(EnvType.CLIENT)
 public class MoreMouseKeybindsClient {
     public static final String MOD_ID = "moremousekeybinds";
-    static final boolean SHOULD_USE_LEGACY_TEXT = shouldUseLegacyText();
     public static boolean shouldCancelSwingWhenCoolingDown = false;
     public static boolean shouldCancelSwingWhenNoTarget = false;
     public static boolean swingCancelledWhenCoolingDown = false;
@@ -91,11 +89,7 @@ public class MoreMouseKeybindsClient {
     private static void sendToggleMessage(boolean optionToCheck, String message, Minecraft client) {
         if (client.player == null) return;
 
-        if (SHOULD_USE_LEGACY_TEXT) {
-            client.player.displayClientMessage((Component) ComponentHack.literal(message + ((optionToCheck) ? "ON" : "OFF")), true);
-        } else {
-            client.player.displayClientMessage(Component.literal(message + ((optionToCheck) ? "ON" : "OFF")), true);
-        }
+        client.player.displayClientMessage(Component.literal(message + ((optionToCheck) ? "ON" : "OFF")), true);
     }
 
     private static void onStartTick(Minecraft client) {
@@ -157,16 +151,5 @@ public class MoreMouseKeybindsClient {
                 periodicAttackCounter++;
             }
         }
-    }
-
-    private static boolean shouldUseLegacyText() {
-        try {
-            Class.forName("net.minecraft.class_2561").getMethod("method_43470", String.class);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            return true;
-        }
-        return false;
     }
 }
