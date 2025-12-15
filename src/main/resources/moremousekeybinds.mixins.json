@@ -1,0 +1,12 @@
+{
+  "package": "me._12emin34.moremousekeybinds.mixin",
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [],
+  "client": []
+}
